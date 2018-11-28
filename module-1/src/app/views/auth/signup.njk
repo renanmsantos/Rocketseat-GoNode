@@ -1,12 +1,12 @@
 {% extends "_layouts/auth.njk" %}
 
 {% block body %}
-  <form action="/signup" method="post">
+  <form action="/signup" method="post" enctype="multipart/form-data">
     <label for="avatar">
       <img src="/images/avatar.svg" heigth="24" />
     </label>
 
-    <input id="avatar" name="avatar" type="file"/>
+    <input id="avatar" name="avatar" type="file" />
 
     <input type="text" name="name" placeholder="Your full name" />
     <input type="email" name="email" placeholder="Your e-mail" />
