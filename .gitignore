@@ -62,3 +62,5 @@ typings/
 
 # VSCODE workspace
 workspace.code-workspace
+module-1/tmp
+
