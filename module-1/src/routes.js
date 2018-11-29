@@ -10,8 +10,21 @@ const upload = require("multer")(multerConfig);
 
 const UserController = require("./app/controllers/UserController");
 const SessionController = require("./app/controllers/SessionController");
+const DashboardController = require("./app/controllers/DashboardController");
+const FileController = require("./app/controllers/FileController");
+const AppointmentController = require("./app/controllers/AppointmentController");
+
+routes.use((req, res, next) => {
+  res.locals.flashSuccess = req.flash("success");
+  res.locals.flashError = req.flash("error");
+
+  return next();
+});
 
 routes.get("/", guestMiddleware, SessionController.create);
+
+routes.get("/files/:file", FileController.show);
+
 routes.post("/signin", SessionController.store);
 
 routes.get("/signup", guestMiddleware, UserController.create);
@@ -19,11 +32,10 @@ routes.post("/signup", upload.single("avatar"), UserController.store);
 
 routes.use("/app", authMiddleware);
 
-routes.get("/app/dashboard", (req, res) => {
-  console.log(req.session.user);
-  res.render("dashboard");
-});
+routes.get("/app/dashboard", DashboardController.index);
 
 routes.get("/app/logout", SessionController.destroy);
+
+routes.get("/app/appointments/new/:provider", AppointmentController.create);
 
 module.exports = routes;
