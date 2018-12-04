@@ -4,6 +4,7 @@ class SessionController {
   async create(req, res) {
     return res.render("auth/signin");
   }
+
   async store(req, res) {
     const { email, password } = req.body;
 

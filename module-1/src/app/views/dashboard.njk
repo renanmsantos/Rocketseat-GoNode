@@ -3,19 +3,42 @@
 {% block body %}
   <div class="content">
     <strong>Hello, {{ user.name }}</strong>
-    <p>Select a barber below</p>
-    <ul class="providers">
-      {% for provider in providers %}
-        <li class="provider">
-          <div>
-            <img src="/files/{{ provider.avatar }}" />
-            <strong>{{ provider.name }}</strong>
-          </div>
-          <a href="/app/appointments/new/{{ provider.id }}">+</a>
-        </li>
-      {% endfor %}
-    </ul>
+    {% if user.provider === true %}
+      <p>Select a date to the view appointments</p>
+
+      <input type="text" class="flatpickr" placeholder="Click to select a date"  />
+      <div id="appointments"></div>
+
+    {% else %}
+      <p>Select a barber below</p>
+      <ul class="providers">
+        {% for provider in providers %}
+          <li class="provider">
+            <div>
+              <img src="/files/{{ provider.avatar }}" />
+              <strong>{{ provider.name }}</strong>
+            </div>
+            <a href="/app/appointments/new/{{ provider.id }}">+</a>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
     <a href="/app/logout" class="logout">Exit</a>
+
   </div>
+
+  <script type="text/javascript">
+    flatpickr('.flatpickr', {
+      minDate: new Date(),
+      dateFormat: 'd/m/Y',
+      onChange: function(date){
+        fetch(`/app/appointments/{{ user.id }}?date=${date[0].getTime()}`).then( function (response) {
+          response.text().then(function (html){
+            document.getElementById('appointments').innerHTML = html;
+          });
+        });
+      }
+    })
+  </script>
 {% endblock %}
