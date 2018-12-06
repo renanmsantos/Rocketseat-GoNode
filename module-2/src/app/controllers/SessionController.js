@@ -1,24 +1,35 @@
-const User = require("../models/User");
+const { User } = require("../models");
 
 class SessionController {
+  async create(req, res) {
+    return res.render("auth/signin");
+  }
+
   async store(req, res) {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.status(400).json({
-        error: "User not found."
-      });
+      req.flash("error", "User not found");
+      return res.redirect("/");
     }
 
-    if (!(await user.compareHash(password))) {
-      return res.status(400).json({
-        error: "Invalid password"
-      });
+    if (!(await user.checkPassword(password))) {
+      req.flash("error", "Wrong password");
+      return res.redirect("/");
     }
 
-    return res.json({ user, token: User.generateToken(user) });
+    req.session.user = user;
+
+    return res.redirect("/app/dashboard");
+  }
+
+  destroy(req, res) {
+    req.session.destroy(() => {
+      res.clearCookie("root");
+      return res.redirect("/");
+    });
   }
 }
 

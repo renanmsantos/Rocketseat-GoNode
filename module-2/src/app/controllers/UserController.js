@@ -1,18 +1,14 @@
-const User = require("../models/User");
+const { User } = require("../models");
 
 class UserController {
+  create(req, res) {
+    return res.render("auth/signup");
+  }
+
   async store(req, res) {
-    const { email } = req.body;
-
-    if (await User.findOne({ email })) {
-      return res.status(400).json({
-        error: "User already exists."
-      });
-    }
-
-    const user = await User.create(req.body);
-
-    return res.json(user);
+    const { filename: avatar } = req.file;
+    await User.create({ ...req.body, avatar });
+    return res.redirect("/");
   }
 }
 
