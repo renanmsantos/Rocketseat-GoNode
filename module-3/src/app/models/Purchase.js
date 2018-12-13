@@ -12,10 +12,17 @@ const Purchase = new mongoose.Schema({
     ref: "User",
     required: true
   },
+  finished: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   createdAt: {
     type: Date,
     default: Date.now
   }
 });
+
+Purchase.plugin(mongoosePaginate);
 
 module.exports = mongoose.model("Purchase", Purchase);

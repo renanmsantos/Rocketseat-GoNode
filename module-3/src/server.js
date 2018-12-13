@@ -46,7 +46,8 @@ class App {
   }
 
   exception() {
-    if (process.env.NODE_ENV === "production") {
+    if (process.env.NODE_ENV == "production") {
+      console.log("AQUIII!");
       this.express.use(Sentry.Handlers.errorHandler());
     }
 

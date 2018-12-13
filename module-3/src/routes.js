@@ -9,11 +9,14 @@ const authMiddleware = require("./app/middlewares/auth");
 const controllers = require("./app/controllers");
 const validators = require("./app/validators");
 
+// USERS
 routes.post(
   "/users",
   validate(validators.User),
   handle(controllers.UserController.store)
 );
+
+// SESSIONS
 routes.post(
   "/sessions",
   validate(validators.Session),
@@ -43,5 +46,7 @@ routes.post(
   validate(validators.Purchase),
   handle(controllers.PurchaseController.store)
 );
+routes.get("/purchases", handle(controllers.PurchaseController.index));
+routes.put("/purchases/:id", handle(controllers.PurchaseController.finish));
 
 module.exports = routes;
