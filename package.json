@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@sentry/node": "^4.4.1",
-    "dotenv": "^6.2.0",
-    "express-async-handler": "^1.1.4",
-    "youch": "^2.0.10"
-  }
-}

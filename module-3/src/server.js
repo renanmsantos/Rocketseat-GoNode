@@ -23,7 +23,7 @@ class App {
   }
 
   sentry() {
-    Sentry.init(sentryConfig.dsn);
+    Sentry.init(sentryConfig);
   }
 
   database() {
@@ -46,7 +46,7 @@ class App {
   }
 
   exception() {
-    if (process.env.NODE_ENV == "production") {
+    if (process.env.NODE_ENV === "production") {
       this.express.use(Sentry.Handlers.errorHandler());
     }
 
