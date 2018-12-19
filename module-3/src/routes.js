@@ -47,6 +47,10 @@ routes.post(
   handle(controllers.PurchaseController.store)
 );
 routes.get("/purchases", handle(controllers.PurchaseController.index));
-routes.put("/purchases/:id", handle(controllers.PurchaseController.finish));
+routes.put(
+  "/purchases/accept/:id",
+  handle(controllers.PurchaseController.accept)
+);
+routes.delete("/purchases/:id", handle(controllers.PurchaseController.destroy));
 
 module.exports = routes;

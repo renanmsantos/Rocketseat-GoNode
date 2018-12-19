@@ -2,7 +2,7 @@ const Ad = require("../models/Ad");
 
 class AdController {
   async index(req, res) {
-    const filters = {};
+    const filters = { purchasedBy: { $exists: false } };
     if (req.query.price_min || req.query.price_max) {
       filters.price = {};
       if (req.query.price_min) {
@@ -20,7 +20,7 @@ class AdController {
     const ads = await Ad.paginate(filters, {
       page: req.query.page || 1,
       limit: 20,
-      populate: ["author"],
+      populate: ["author", "purchase"],
       sort: "-createdAt"
     });
     return res.json(ads);
